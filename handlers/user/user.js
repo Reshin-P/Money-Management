@@ -1,7 +1,7 @@
-const response = require("../utils/response");
+const response = require("../../utils/response");
 
 const { USERS_TABLE } = process.env;
-const { createUser, getUser } = require("../utils/dynamoDB");
+const { createUser, getUser } = require("../../controller/userController");
 
 module.exports.register = async (event) => {
   try {

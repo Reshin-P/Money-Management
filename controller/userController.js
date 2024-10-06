@@ -1,10 +1,11 @@
-const AWS = require("aws-sdk");
-
-const dynamoDb = new AWS.DynamoDB.DocumentClient();
 const bcrypt = require("bcryptjs");
 const { v4: uuidv4 } = require("uuid");
+const { getDb } = require("../utils/dynamoDB");
+const dynamoDb = getDb();
 
 const createUser = async (tableName, item) => {
+  console.log("createUser", getDb);
+
   try {
     const createdAt = new Date().toISOString();
     const params = {
