@@ -32,7 +32,6 @@ const getUser = async (tableName, body) => {
         email: body.email,
       },
     };
-    console.log("prams", params);
 
     return dynamoDb.get(params).promise();
   } catch (error) {

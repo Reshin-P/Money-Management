@@ -9,7 +9,7 @@ useDotenv: true
 provider:
   name: aws
   runtime: nodejs20.x
-  stage: ${opt:stage,'dev'}
+  stage: ${opt:stage,'develop'}
   lambdaHashingVersion: '20201221'
   environment:
     DYNAMODB_TABLE: ${self:service}-${sls:stage}
@@ -66,11 +66,11 @@ resources:
       Properties:
         AttributeDefinitions:
           -
-            AttributeName: id
+            AttributeName: email
             AttributeType: S
         KeySchema:
           -
-            AttributeName: id
+            AttributeName: email
             KeyType: HASH
         BillingMode: PAY_PER_REQUEST
         TableName: ${self:custom.userTableName}
