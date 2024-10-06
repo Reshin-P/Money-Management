@@ -4,7 +4,6 @@ import { createUser, getUser } from "../../controller/userController.js";
 import { comparePassword } from "../../utils/brcypt.js";
 import { parseBody } from "../../utils/common.utils.js";
 
-// Access environment variables using ES6 destructuring
 const { USERS_TABLE } = process.env;
 
 export const register = async (event) => {

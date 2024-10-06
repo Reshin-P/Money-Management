@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 // Initialize DynamoDB connection
 const dynamoDb = getDb();
 
-export const addExpenseToDB = async (tableName, data) => {
+export const addIncomeToDB = async (tableName, data) => {
   const createdAt = new Date().toISOString();
   const params = {
     TableName: tableName,

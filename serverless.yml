@@ -16,6 +16,7 @@ provider:
     TEST_VAR: "test reshi"
     USERS_TABLE: ${self:custom.userTableName}
     EXPENCE_TABLE: ${self:custom.expenceTableName}
+    INCOME_TABLE: ${self:custom.incomeTableName}
   httpApi:
     cors: true
   iam:
@@ -33,6 +34,7 @@ provider:
 
 custom: 
   userTableName: usersTable-${opt:stage,self:provider.stage}
+  incomeTableName: incomeTable-${opt:stage,self:provider.stage}
   expenceTableName: expenceTable-${opt:stage,self:provider.stage}
   serverless-offline:
     port: 3000 
@@ -76,6 +78,12 @@ functions:
       - httpApi:
           path: /expense/{expenseNumber}
           method: delete
+  addIncome:
+    handler: handlers/income/income.addIncome
+    events:
+      - httpApi:
+          path: /income
+          method: post
 
 
 
@@ -111,3 +119,18 @@ resources:
             KeyType: HASH
         BillingMode: PAY_PER_REQUEST
         TableName: ${self:custom.expenceTableName}
+
+    incomeTable:
+      Type: 'AWS::DynamoDB::Table'
+      DeletionPolicy: Retain
+      Properties:
+        AttributeDefinitions:
+          - 
+            AttributeName: userEmail
+            AttributeType: S
+        KeySchema:
+          - 
+            AttributeName: userEmail
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
+        TableName: ${self:custom.incomeTableName}

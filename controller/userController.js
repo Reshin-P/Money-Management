@@ -1,4 +1,3 @@
-// Import necessary modules using ES6 syntax
 import bcrypt from "bcryptjs";
 import { v4 as uuidv4 } from "uuid";
 import { getDb } from "../utils/dynamoDB.js";
@@ -17,7 +16,7 @@ export const createUser = async (tableName, item) => {
       TableName: tableName,
       Item: {
         ...item,
-        id: uuidv4(), // Generate a new UUID for the user ID
+        id: uuidv4(),
         createdAt,
         password: hashedPassword,
         balance: 0,
@@ -41,7 +40,7 @@ export const getUser = async (tableName, body) => {
     };
 
     const user = await dynamoDb.get(params).promise();
-    return user.Item; // Return the user item
+    return user.Item;
   } catch (error) {
     console.error(error);
     throw error;

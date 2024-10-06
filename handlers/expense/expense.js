@@ -3,8 +3,10 @@ import { addExpenseToDB } from "../../controller/expenseController.js";
 import { errorResponse, successResponse } from "../../utils/response.js";
 import { parseBody } from "../../utils/common.utils.js";
 import { updateBalance } from "../../controller/userController.js";
+
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 const { EXPENCE_TABLE } = process.env;
+
 // Function to add an expense to the database
 export const addExpense = async (event) => {
   try {
