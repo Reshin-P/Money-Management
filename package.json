@@ -1,0 +1,11 @@
+{
+  "devDependencies": {
+    "serverless-offline": "^14.3.2"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.1691.0",
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.4.5",
+    "uuid": "^10.0.0"
+  }
+}

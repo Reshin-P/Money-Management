@@ -1,0 +1,76 @@
+# "org" ensures this Service is used with the correct Serverless Framework Access Key.
+org: devreshi
+# "app" enables Serverless Framework Dashboard features and sharing them with other Services.
+app: money
+# "service" is the name of this project. This will also be added to your AWS resource names.
+service: money
+useDotenv: true
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  stage: ${opt:stage,'dev'}
+  lambdaHashingVersion: '20201221'
+  environment:
+    DYNAMODB_TABLE: ${self:service}-${sls:stage}
+    TEST_VAR: "test reshi"
+    USERS_TABLE: ${self:custom.userTableName}
+  httpApi:
+    cors: true
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - dynamodb:Query
+            - dynamodb:Scan
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+            - dynamodb:UpdateItem
+            - dynamodb:DeleteItem
+          Resource: "arn:aws:dynamodb:${aws:region}:*:table/${self:provider.environment.DYNAMODB_TABLE}"
+
+custom: 
+  userTableName: usersTable-${opt:stage,self:provider.stage}
+
+plugins:
+  - serverless-offline
+
+functions:
+  hello:
+    handler: handler.hello
+    events:
+      - httpApi:
+          path: /
+          method: get
+  register:
+    handler: handlers/user/user.register
+    events:
+      - httpApi:
+          path: /register
+          method: post
+  login:
+    handler: handlers/user/user.login
+    events:
+      - httpApi:
+          path: /login
+          method: post
+
+
+
+resources:
+  Resources:
+    userTable: 
+      Type: 'AWS::DynamoDB::Table'
+      DeletionPolicy: Retain
+      Properties:
+        AttributeDefinitions:
+          -
+            AttributeName: id
+            AttributeType: S
+        KeySchema:
+          -
+            AttributeName: id
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
+        TableName: ${self:custom.userTableName}
