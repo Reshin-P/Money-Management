@@ -2,13 +2,14 @@
 import { successResponse, errorResponse } from "../../utils/response.js";
 import { createUser, getUser } from "../../controller/userController.js";
 import { comparePassword } from "../../utils/brcypt.js";
+import { parseBody } from "../../utils/common.utils.js";
 
 // Access environment variables using ES6 destructuring
 const { USERS_TABLE } = process.env;
 
 export const register = async (event) => {
   try {
-    const body = JSON.parse(event.body);
+    const body = parseBody(event);
     const res = await createUser(USERS_TABLE, body);
     return successResponse(200, "User created successfully", res);
   } catch (error) {
@@ -19,7 +20,8 @@ export const register = async (event) => {
 // Login function - handles user login
 export const login = async (event) => {
   try {
-    const body = JSON.parse(event.body);
+    const body = parseBody(event);
+
     const user = await getUser(USERS_TABLE, body);
     const isMatch = await comparePassword(body.password, user.password);
 

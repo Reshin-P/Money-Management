@@ -1,13 +1,16 @@
 {
-  "type": "module", 
+  "type": "module",
   "devDependencies": {
-    "serverless-offline": "^14.3.2"
+    "serverless-offline": "^14.3.2",
+    "nodemon": "^2.0.22" 
   },
   "dependencies": {
     "aws-sdk": "^2.1691.0",
     "bcryptjs": "^2.4.3",
     "dotenv": "^16.4.5",
     "uuid": "^10.0.0"
+  },
+  "scripts": {
+    "start": "nodemon --exec serverless offline" 
   }
 }
-

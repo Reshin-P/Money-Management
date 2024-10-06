@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 import { v4 as uuidv4 } from "uuid";
 import { getDb } from "../utils/dynamoDB.js";
 import { hashPassword } from "../utils/brcypt.js";
+const { USERS_TABLE } = process.env;
 
 // Initialize DynamoDB connection
 const dynamoDb = getDb();
@@ -43,6 +44,50 @@ export const getUser = async (tableName, body) => {
     return user.Item; // Return the user item
   } catch (error) {
     console.error(error);
+    throw error;
+  }
+};
+
+export const updateBalance = async (email, amount, type) => {
+  try {
+    const getParams = {
+      TableName: USERS_TABLE,
+      Key: {
+        email: email,
+      },
+    };
+
+    const user = await dynamoDb.get(getParams).promise();
+
+    if (!user.Item) {
+      throw new Error(`User with email ${email} not found.`);
+    }
+
+    let currentBalance = parseInt(user.Item.balance) || 0;
+
+    if (type === "expense") {
+      currentBalance -= amount;
+    } else if (type === "income") {
+      currentBalance += amount;
+    } else {
+      throw new Error('Invalid type. Must be either "expense" or "income".');
+    }
+
+    const updateParams = {
+      TableName: USERS_TABLE,
+      Key: {
+        email: email,
+      },
+      UpdateExpression: "set balance = :newBalance",
+      ExpressionAttributeValues: {
+        ":newBalance": currentBalance,
+      },
+      ReturnValues: "UPDATED_NEW",
+    };
+
+    return await dynamoDb.update(updateParams).promise();
+  } catch (error) {
+    console.error("Error updating balance:", error);
     throw error;
   }
 };
