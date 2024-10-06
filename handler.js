@@ -1,6 +1,7 @@
-require("dotenv").config();
+import dotenv from "dotenv";
+dotenv.config();
 
-exports.hello = async (event) => {
+export const hello = async (event) => {
   console.log("test");
 
   return {

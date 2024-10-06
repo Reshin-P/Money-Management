@@ -32,7 +32,8 @@ provider:
 
 custom: 
   userTableName: usersTable-${opt:stage,self:provider.stage}
-
+  serverless-offline:
+    port: 3000 
 plugins:
   - serverless-offline
 

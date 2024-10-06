@@ -1,7 +1,8 @@
-const bcrypt = require("bcryptjs");
+// Import bcrypt using ES6 syntax
+import bcrypt from "bcryptjs";
 
 // Utility function to hash a password
-const hashPassword = (password, saltRounds = 10) => {
+export const hashPassword = (password, saltRounds = 10) => {
   return new Promise((resolve, reject) => {
     bcrypt.hash(password, saltRounds, (err, hash) => {
       if (err) reject(err);
@@ -11,7 +12,7 @@ const hashPassword = (password, saltRounds = 10) => {
 };
 
 // Utility function to compare password with a stored hash
-const comparePassword = (password, hashedPassword) => {
+export const comparePassword = (password, hashedPassword) => {
   return new Promise((resolve, reject) => {
     bcrypt.compare(password, hashedPassword, (err, isMatch) => {
       if (err) reject(err);
@@ -19,5 +20,3 @@ const comparePassword = (password, hashedPassword) => {
     });
   });
 };
-
-module.exports = { hashPassword, comparePassword };

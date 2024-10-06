@@ -1,31 +1,34 @@
-const { successResponse, errorResponse } = require("../../utils/response");
+// Import necessary utilities and controllers using ES6 syntax
+import { successResponse, errorResponse } from "../../utils/response.js";
+import { createUser, getUser } from "../../controller/userController.js";
+import { comparePassword } from "../../utils/brcypt.js";
 
+// Access environment variables using ES6 destructuring
 const { USERS_TABLE } = process.env;
-const { createUser, getUser } = require("../../controller/userController");
-const { comparePassword } = require("../../utils/brcypt");
 
-module.exports.register = async (event) => {
+export const register = async (event) => {
   try {
     const body = JSON.parse(event.body);
     const res = await createUser(USERS_TABLE, body);
-    return successResponse(200, "User created sucessfully", res);
+    return successResponse(200, "User created successfully", res);
   } catch (error) {
-    return errorResponse(400, "something went wrong", error);
+    return errorResponse(400, "Something went wrong", error);
   }
 };
 
-module.exports.login = async (event) => {
+// Login function - handles user login
+export const login = async (event) => {
   try {
     const body = JSON.parse(event.body);
     const user = await getUser(USERS_TABLE, body);
     const isMatch = await comparePassword(body.password, user.password);
 
     if (isMatch) {
-      return successResponse(200, "logged in successfully", user);
+      return successResponse(200, "Logged in successfully", user);
     } else {
       return errorResponse(400, "User not found", body);
     }
   } catch (error) {
-    return errorResponse(400, "something went wrong", error);
+    return errorResponse(400, "Something went wrong", error);
   }
 };

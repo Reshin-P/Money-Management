@@ -1,20 +1,22 @@
-const bcrypt = require("bcryptjs");
-const { v4: uuidv4 } = require("uuid");
-const { getDb } = require("../utils/dynamoDB");
-const { hashPassword } = require("../utils/brcypt");
+// Import necessary modules using ES6 syntax
+import bcrypt from "bcryptjs";
+import { v4 as uuidv4 } from "uuid";
+import { getDb } from "../utils/dynamoDB.js";
+import { hashPassword } from "../utils/brcypt.js";
+
+// Initialize DynamoDB connection
 const dynamoDb = getDb();
 
-const createUser = async (tableName, item) => {
-  console.log("createUser", getDb);
-
+export const createUser = async (tableName, item) => {
   try {
     const createdAt = new Date().toISOString();
     const hashedPassword = await hashPassword(item.password);
+
     const params = {
       TableName: tableName,
       Item: {
         ...item,
-        id: uuidv4(),
+        id: uuidv4(), // Generate a new UUID for the user ID
         createdAt,
         password: hashedPassword,
         balance: 0,
@@ -22,12 +24,13 @@ const createUser = async (tableName, item) => {
     };
     return dynamoDb.put(params).promise();
   } catch (error) {
-    console.log(error);
+    console.error(error);
     throw error;
   }
 };
 
-const getUser = async (tableName, body) => {
+// Retrieve a user from DynamoDB by email
+export const getUser = async (tableName, body) => {
   try {
     const params = {
       TableName: tableName,
@@ -37,11 +40,9 @@ const getUser = async (tableName, body) => {
     };
 
     const user = await dynamoDb.get(params).promise();
-    return user.Item;
+    return user.Item; // Return the user item
   } catch (error) {
-    console.log(error);
+    console.error(error);
     throw error;
   }
 };
-
-module.exports = { createUser, getUser };
