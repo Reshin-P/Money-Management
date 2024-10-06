@@ -9,14 +9,10 @@ const { EXPENCE_TABLE } = process.env;
 export const addExpense = async (event) => {
   try {
     const body = parseBody(event);
-    console.log("body", EXPENCE_TABLE, body);
-
-    const res = addExpenseToDB(EXPENCE_TABLE, body);
-    const user = updateBalance(body.userEmail, body.amount, "expense");
+    const res = await addExpenseToDB(EXPENCE_TABLE, body);
+    const user = await updateBalance(body.userEmail, body.amount, "expense");
     return successResponse(200, "expence added", user);
   } catch (error) {
-    console.log("error", error);
-
     return errorResponse(400, "Something went wrong", error);
   }
 };

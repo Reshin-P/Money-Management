@@ -4,8 +4,6 @@ import { v4 as uuidv4 } from "uuid";
 const dynamoDb = getDb();
 
 export const addExpenseToDB = async (tableName, data) => {
-  console.log("addExpenseToDB");
-
   const createdAt = new Date().toISOString();
   const params = {
     TableName: tableName,
@@ -16,10 +14,8 @@ export const addExpenseToDB = async (tableName, data) => {
       updatedAt: createdAt,
     },
   };
-  console.log("params", params);
 
   const res = await dynamoDb.put(params).promise();
-  console.log("res", res);
 
   return res; // Return the added expense
 };
