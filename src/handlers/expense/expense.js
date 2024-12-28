@@ -1,5 +1,8 @@
 import AWS from "aws-sdk";
-import { addExpenseToDB } from "../../controller/expenseController.js";
+import {
+  addExpenseToDB,
+  deleteTransactionFromDb,
+} from "../../controller/expenseController.js";
 import { errorResponse, successResponse } from "../../utils/response.js";
 import { parseBody } from "../../utils/common.utils.js";
 import { updateBalance } from "../../controller/userController.js";
@@ -14,7 +17,7 @@ export const addExpense = async (event) => {
     console.log(body);
 
     const res = await addExpenseToDB(EXPENCE_TABLE, body);
-    const user = await updateBalance(body.userEmail, body.amount, "expense");
+    const user = await updateBalance(body.userEmail, body.amount, "Expense");
     return successResponse(200, "expence added", user);
   } catch (error) {
     return errorResponse(400, "Something went wrong", error);
@@ -42,14 +45,17 @@ export const updateExpense = async (table, expenseNumber, updates) => {
   return result.Attributes; // Return the updated expense
 };
 
-// Function to delete an expense from the database
-export const deleteExpense = async (table, expenseNumber) => {
-  const params = {
-    TableName: table,
-    Key: {
-      expenseNumber: expenseNumber,
-    },
-  };
-  await dynamoDb.delete(params).promise();
-  return { message: "Expense deleted" }; // Return confirmation message
+export const deleteTransaction = async (event) => {
+  const id = event.pathParameters.id;
+
+  try {
+    const res = await deleteTransactionFromDb(id);
+    return successResponse(200, "Transaction deleted successfully", res);
+  } catch (error) {
+    return errorResponse(
+      400,
+      "Something went wrong while deleting the transaction",
+      error
+    );
+  }
 };

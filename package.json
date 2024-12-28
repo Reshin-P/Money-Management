@@ -1,8 +1,8 @@
 {
   "type": "module",
   "devDependencies": {
-    "serverless-offline": "^14.3.2",
-    "nodemon": "^2.0.22" 
+    "nodemon": "^2.0.22",
+    "offline": "nodemon --exec 'serverless offline start' --ext js,json,yml"
   },
   "dependencies": {
     "aws-sdk": "^2.1691.0",
@@ -11,6 +11,6 @@
     "uuid": "^10.0.0"
   },
   "scripts": {
-    "start": "nodemon --exec serverless offline" 
+    "start": "nodemon --exec serverless offline"
   }
 }

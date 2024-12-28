@@ -64,12 +64,12 @@ export const updateBalance = async (email, amount, type) => {
 
     let currentBalance = parseInt(user.Item.balance) || 0;
 
-    if (type === "expense") {
+    if (type === "Expense") {
       currentBalance -= amount;
-    } else if (type === "income") {
+    } else if (type === "Income") {
       currentBalance += amount;
     } else {
-      throw new Error('Invalid type. Must be either "expense" or "income".');
+      throw new Error('Invalid type. Must be either "Expense" or "Income".');
     }
 
     const updateParams = {

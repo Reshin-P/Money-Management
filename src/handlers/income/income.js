@@ -8,7 +8,7 @@ export const addIncome = async (event) => {
   try {
     const body = parseBody(event);
     const res = await addIncomeToDB(INCOME_TABLE, body);
-    const user = await updateBalance(body.userEmail, body.amount, "income");
+    const user = await updateBalance(body.userEmail, body.amount, "Income");
     return successResponse(200, "income added", user);
   } catch (error) {
     return errorResponse(400, "Something went wrong", error);
