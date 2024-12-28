@@ -44,11 +44,10 @@ export const getUserDetails = async (event) => {
       return errorResponse(400, "User not found", body);
     }
     const allTransactions = await getAllTransactions(email);
-    return successResponse(
-      200,
-      "Fetch all Transactions successfully",
-      allTransactions
-    );
+    return successResponse(200, "Fetch all Transactions successfully", {
+      ...allTransactions,
+      balance: user.balance,
+    });
   } catch (error) {
     return errorResponse(400, "Something went wrong", error);
   }
