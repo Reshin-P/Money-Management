@@ -18,6 +18,7 @@ provider:
     USERS_TABLE: ${self:custom.userTableName}
     EXPENCE_TABLE: ${self:custom.expenceTableName}
     INCOME_TABLE: ${self:custom.incomeTableName}
+    TRANSACTION_TABLE: transactionTable-${opt:stage,self:provider.stage}
   httpApi:
     cors: true
   iam:
@@ -35,6 +36,7 @@ provider:
             - "arn:aws:dynamodb:${self:provider.region}:539247476813:table/${self:custom.userTableName}"
             - "arn:aws:dynamodb:${self:provider.region}:539247476813:table/${self:custom.expenceTableName}"
             - "arn:aws:dynamodb:${self:provider.region}:539247476813:table/${self:custom.incomeTableName}"
+            - "arn:aws:dynamodb:${self:provider.region}:539247476813:table/transactionTable-${opt:stage,self:provider.stage}"
 
 custom:
   userTableName: usersTable-${opt:stage,self:provider.stage}
