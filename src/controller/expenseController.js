@@ -6,7 +6,7 @@ const dynamoDb = getDb();
 export const addExpenseToDB = async (tableName, data) => {
   const createdAt = new Date().toISOString();
   const params = {
-    TableName: tableName,
+    TableName: "transactionTable-develop",
     Item: {
       id: uuidv4(),
       ...data,

@@ -3,6 +3,7 @@ import { successResponse, errorResponse } from "../../utils/response.js";
 import { createUser, getUser } from "../../controller/userController.js";
 import { comparePassword } from "../../utils/brcypt.js";
 import { parseBody } from "../../utils/common.utils.js";
+import { getAllTransactions } from "../../controller/transactionController.js";
 
 const { USERS_TABLE } = process.env;
 
@@ -29,6 +30,25 @@ export const login = async (event) => {
     } else {
       return errorResponse(400, "User not found", body);
     }
+  } catch (error) {
+    return errorResponse(400, "Something went wrong", error);
+  }
+};
+
+// Login function - handles user login
+export const getUserDetails = async (event) => {
+  try {
+    const email = event.pathParameters.email;
+    const user = await getUser(USERS_TABLE, { email });
+    if (!user) {
+      return errorResponse(400, "User not found", body);
+    }
+    const allTransactions = await getAllTransactions(email);
+    return successResponse(
+      200,
+      "Fetch all Transactions successfully",
+      allTransactions
+    );
   } catch (error) {
     return errorResponse(400, "Something went wrong", error);
   }
