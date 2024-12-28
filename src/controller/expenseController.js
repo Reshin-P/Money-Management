@@ -1,6 +1,6 @@
 import { getDb } from "../utils/dynamoDB.js";
 import { v4 as uuidv4 } from "uuid";
-import { updateBalance } from "./userController.js";
+import { updateBalanceAfterDelete } from "./userController.js";
 // Initialize DynamoDB connection
 const dynamoDb = getDb();
 
@@ -44,7 +44,7 @@ export const deleteTransactionFromDb = async (id) => {
   }
 
   await dynamoDb.delete(params).promise();
-  return await updateBalance(
+  return await updateBalanceAfterDelete(
     fetchedItem.Item.userEmail,
     fetchedItem.Item.amount,
     fetchedItem.Item.type

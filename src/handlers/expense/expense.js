@@ -14,7 +14,6 @@ const { EXPENCE_TABLE } = process.env;
 export const addExpense = async (event) => {
   try {
     const body = parseBody(event);
-    console.log(body);
 
     const res = await addExpenseToDB(EXPENCE_TABLE, body);
     const user = await updateBalance(body.userEmail, body.amount, "Expense");
